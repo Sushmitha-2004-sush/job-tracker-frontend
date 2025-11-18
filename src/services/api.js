@@ -9,12 +9,23 @@ const api = axios.create({
   },
 });
 
+// Public endpoints that don't need authentication
+const publicEndpoints = ['/register/', '/token/', '/token/refresh/'];
+
 // Add token to requests automatically
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    (config) => {
+    // Check if this is a public endpoint
+    const isPublicEndpoint = publicEndpoints.some(endpoint => 
+      config.url?.includes(endpoint)
+    );
+
+    // Only add token if NOT a public endpoint
+    if (!isPublicEndpoint) {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },

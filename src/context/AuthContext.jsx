@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import axios from 'axios';  // Add this import
 
 export const AuthContext = createContext();
 
@@ -11,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      // Token exists, user is logged in
       const username = localStorage.getItem('username');
       setUser({ username });
     }
@@ -38,18 +38,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Register function
-  const register = async (userData) => {
-    try {
-      await api.post('register/', userData);
-      return { success: true };
+  // Register function - use axios directly to avoid auth headers
+ const register = async (userData) => {
+  try {
+        await api.post('register/', userData);  // Works now because api.js skips auth
+        return { success: true };
     } catch (error) {
-      return { 
+        return { 
         success: false, 
         error: error.response?.data || 'Registration failed' 
-      };
+        };
     }
-  };
+    };
 
   // Logout function
   const logout = () => {
