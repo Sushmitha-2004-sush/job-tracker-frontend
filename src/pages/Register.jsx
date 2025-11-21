@@ -210,7 +210,7 @@ function Register() {
     setErrors({});
     setLoading(true);
 
-    const result = await register(formData);
+    const result = await Register(formData);
     
     if (result.success) {
       setSuccess(true);
