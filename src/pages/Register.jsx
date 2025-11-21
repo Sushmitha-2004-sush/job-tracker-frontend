@@ -31,7 +31,7 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
   
-  const { Register, user } = useContext(AuthContext);
+  const { register, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -210,7 +210,7 @@ function Register() {
     setErrors({});
     setLoading(true);
 
-    const result = await Register(formData);
+    const result = await register(formData);
     
     if (result.success) {
       setSuccess(true);
